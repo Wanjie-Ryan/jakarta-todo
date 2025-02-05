@@ -16,6 +16,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -62,4 +63,27 @@ public class TodoRest {
         return todoService.GetTodos();
     }
 
+    @Path("status")
+    @PUT
+
+    // Query param Extracts the id parameter from the query string in the URL
+    public Response markAsComplete(@QueryParam("id") Long id) {
+
+// the method below will return a whole object of todo, and therefore not compatible with using int, string to store it.
+//custom object that represents a task in the database.
+        Todo todo = todoService.findToDoById(id); // invokes the method from the service class to get the todo by its id
+        todo.setIsCompleted(true); // if a todo object is found, its returned and stroed in the todo variable
+        //This change is only happening in memory at this point—the database is not updated yet.
+        todoService.UpdateTodo(todo); // you now persist the change in the db using this.
+
+        return Response.ok(todo).build();
+    }
+
+    // DIFFERENCE BETWEEN PUBLIC TODO AND PUBLIC RESPONSE 
+    // public Todo Returns a Todo object directly.
+//Used when you just want to return a specific piece of data (like a single Todo).
+    
+//    PUBLIC RESPONSE
+//    Returns an HTTP response object (Response).
+//Used when you need to control additional HTTP response details 
 }

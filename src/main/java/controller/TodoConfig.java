@@ -15,4 +15,5 @@ import javax.ws.rs.core.Application;
 @ApplicationPath("api/v1") // this will be the entry point to our API, it extends application from the javax rs
 public class TodoConfig extends Application {
     
+    
 }

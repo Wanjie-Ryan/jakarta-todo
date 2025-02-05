@@ -6,11 +6,16 @@
 package com.todo.entity;
 
 import java.time.LocalDate;
+import javax.json.bind.annotation.JsonbDateFormat;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -23,7 +28,12 @@ public class Todo {
     @Id // the id should be unique (primary key)
     @GeneratedValue(strategy = GenerationType.AUTO) // auto generate the Ids.
     private Long Id;
+    @NotEmpty(message = "Task must be set") // the task field should not be empty and no null value can be inputted at the same time
+    @Size(min = 5, message = "Task should be more than 5 characters")
     private String task;
+    @NotNull(message = "Due Date must be set")
+    @FutureOrPresent(message = "Due Date must either be in the present or the future")
+    @JsonbDateFormat(value = "yyy-MM-dd")
     private LocalDate dueDate;
     private Boolean isCompleted;
     private LocalDate dateCompleted;
